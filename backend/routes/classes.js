@@ -2,16 +2,35 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 
-// GET /
+// GET / - List classes with pagination
 router.get('/', async (req, res) => {
   try {
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 50));
+    const offset = (page - 1) * limit;
+
+    const countResult = await pool.query('SELECT COUNT(*) FROM classes');
+    const total = parseInt(countResult.rows[0].count);
+
     const result = await pool.query(
-      `SELECT c.*, i.first_name AS instructor_first_name, i.last_name AS instructor_last_name, (i.first_name || ' ' || i.last_name) AS instructor_name
+      `SELECT c.*, i.first_name AS instructor_first_name, i.last_name AS instructor_last_name,
+              (i.first_name || ' ' || i.last_name) AS instructor_name
        FROM classes c
        LEFT JOIN instructors i ON c.instructor_id = i.id
-       ORDER BY c.day_of_week, c.start_time`
+       ORDER BY c.day_of_week, c.start_time
+       LIMIT $1 OFFSET $2`,
+      [limit, offset]
     );
-    res.json(result.rows);
+
+    res.json({
+      data: result.rows,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
   } catch (err) {
     console.error('Error fetching classes:', err);
     res.status(500).json({ error: 'Internal server error' });
@@ -22,7 +41,8 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT c.*, i.first_name AS instructor_first_name, i.last_name AS instructor_last_name, (i.first_name || ' ' || i.last_name) AS instructor_name
+      `SELECT c.*, i.first_name AS instructor_first_name, i.last_name AS instructor_last_name,
+              (i.first_name || ' ' || i.last_name) AS instructor_name
        FROM classes c
        LEFT JOIN instructors i ON c.instructor_id = i.id
        WHERE c.id = $1`,

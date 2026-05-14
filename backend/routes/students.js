@@ -2,13 +2,37 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 
-// GET /api/students - List all students
+// GET /api/students - List all students with pagination
 router.get('/', async (req, res) => {
   try {
-    const result = await pool.query(
-      'SELECT * FROM students ORDER BY last_name, first_name'
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 50));
+    const offset = (page - 1) * limit;
+    const dojoId = req.user.dojo_id || 1;
+
+    const countResult = await pool.query(
+      'SELECT COUNT(*) FROM students WHERE ($1::integer IS NULL OR dojo_id = $1)',
+      [dojoId]
     );
-    res.json(result.rows);
+    const total = parseInt(countResult.rows[0].count);
+
+    const result = await pool.query(
+      `SELECT * FROM students
+       WHERE ($1::integer IS NULL OR dojo_id = $1)
+       ORDER BY last_name, first_name
+       LIMIT $2 OFFSET $3`,
+      [dojoId, limit, offset]
+    );
+
+    res.json({
+      data: result.rows,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
   } catch (err) {
     console.error('Error fetching students:', err);
     res.status(500).json({ error: 'Internal server error' });
@@ -29,6 +53,43 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// GET /api/students/:id/ai-history - Get AI analysis history for student
+router.get('/:id/ai-history', async (req, res) => {
+  try {
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(50, Math.max(1, parseInt(req.query.limit) || 20));
+    const offset = (page - 1) * limit;
+
+    const countResult = await pool.query(
+      'SELECT COUNT(*) FROM ai_analyses WHERE student_id = $1',
+      [req.params.id]
+    );
+    const total = parseInt(countResult.rows[0].count);
+
+    const result = await pool.query(
+      `SELECT id, endpoint, input_data, result, created_at
+       FROM ai_analyses
+       WHERE student_id = $1
+       ORDER BY created_at DESC
+       LIMIT $2 OFFSET $3`,
+      [req.params.id, limit, offset]
+    );
+
+    res.json({
+      data: result.rows,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
+  } catch (err) {
+    console.error('Error fetching AI history:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // POST /api/students - Create new student
 router.post('/', async (req, res) => {
   try {
@@ -37,14 +98,15 @@ router.post('/', async (req, res) => {
       belt_rank, join_date, goals, emergency_contact,
       emergency_phone, photo_url, active
     } = req.body;
+    const dojoId = req.user.dojo_id || 1;
 
     const result = await pool.query(
       `INSERT INTO students (first_name, last_name, email, phone, date_of_birth,
-        belt_rank, join_date, goals, emergency_contact, emergency_phone, photo_url, active)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *`,
+        belt_rank, join_date, goals, emergency_contact, emergency_phone, photo_url, active, dojo_id)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *`,
       [first_name, last_name, email, phone, date_of_birth,
        belt_rank || 'white', join_date || new Date(), goals,
-       emergency_contact, emergency_phone, photo_url, active !== false]
+       emergency_contact, emergency_phone, photo_url, active !== false, dojoId]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
