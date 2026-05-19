@@ -214,6 +214,9 @@ cron.schedule('0 6 * * *', runBackgroundScan);
 // Run once 10s after boot
 setTimeout(runBackgroundScan, 10000);
 
+// Custom Views (mounted BEFORE 404 / error handler)
+app.use('/api/custom-views', auth, require('./routes/customViews'));
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
