@@ -49,6 +49,7 @@ async function initDb() {
       ALTER TABLE users ADD COLUMN IF NOT EXISTS dojo_id INTEGER DEFAULT 1
     `);
     // Multi-tenant: ensure dojo_id on the most-used tables
+    await pool.query(`ALTER TABLE students ADD COLUMN IF NOT EXISTS dojo_id INTEGER DEFAULT 1`).catch(() => {});
     await pool.query(`ALTER TABLE classes ADD COLUMN IF NOT EXISTS dojo_id INTEGER DEFAULT 1`).catch(() => {});
     await pool.query(`ALTER TABLE instructors ADD COLUMN IF NOT EXISTS dojo_id INTEGER DEFAULT 1`).catch(() => {});
     await pool.query(`ALTER TABLE memberships ADD COLUMN IF NOT EXISTS dojo_id INTEGER DEFAULT 1`).catch(() => {});
@@ -216,6 +217,7 @@ setTimeout(runBackgroundScan, 10000);
 
 // Custom Views (mounted BEFORE 404 / error handler)
 app.use('/api/custom-views', auth, require('./routes/customViews'));
+app.use('/api/sparring-safety-matchmaker', auth, require('./routes/sparringSafetyMatchmaker'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
