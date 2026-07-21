@@ -5,6 +5,12 @@ const jwt = require('jsonwebtoken');
 const pool = require('../db');
 const auth = require('../middleware/auth');
 
+const jwtSecret = () => {
+  const secret = process.env.JWT_SECRET || '';
+  if (secret.length < 32) throw new Error('JWT_SECRET must contain at least 32 characters');
+  return secret;
+};
+
 // POST /api/auth/login
 router.post('/login', async (req, res) => {
   try {
@@ -26,7 +32,7 @@ router.post('/login', async (req, res) => {
 
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET || 'default_jwt_secret',
+      jwtSecret(),
       { expiresIn: '24h' }
     );
 

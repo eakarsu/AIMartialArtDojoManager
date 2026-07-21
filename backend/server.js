@@ -13,10 +13,10 @@ const app = express();
 // Security middleware
 app.use(helmet());
 
-// CORS allowlist via env (ALLOWED_ORIGINS=comma,separated). Falls back to single CLIENT_URL.
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
-  : [process.env.CLIENT_URL || 'http://localhost:3000'];
+// CORS must be configured explicitly by the deployment launcher.
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+  .split(',').map(o => o.trim()).filter(Boolean);
+if (allowedOrigins.length === 0) throw new Error('ALLOWED_ORIGINS is required');
 app.use(cors({
   origin: (origin, cb) => {
     if (!origin) return cb(null, true);
