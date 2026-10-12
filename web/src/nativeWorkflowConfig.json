@@ -1,0 +1,545 @@
+{
+  "title": "Martial Art Dojo Manager",
+  "features": [
+    {
+      "id": "ai-progression-assessment",
+      "endpoint": "/api/ai/progression-assessment",
+      "title": "Progression assessment",
+      "description": "Review native inputs and source evidence before generating. Examples are illustrative and require your review.",
+      "fields": [
+        {
+          "key": "student_id",
+          "type": "text",
+          "required": true,
+          "label": "Student id",
+          "presets": [
+            "Example student id 1",
+            "Example student id 2",
+            "Example student id 3"
+          ],
+          "manual": true,
+          "resource": "students"
+        }
+      ],
+      "source": {
+        "file": "backend/routes/ai.js",
+        "line": 97
+      }
+    },
+    {
+      "id": "ai-training-plan",
+      "endpoint": "/api/ai/training-plan",
+      "title": "Training plan",
+      "description": "Review native inputs and source evidence before generating. Examples are illustrative and require your review.",
+      "fields": [
+        {
+          "key": "student_id",
+          "type": "text",
+          "required": true,
+          "label": "Student id",
+          "presets": [
+            "Example student id 1",
+            "Example student id 2",
+            "Example student id 3"
+          ],
+          "manual": true,
+          "resource": "students"
+        }
+      ],
+      "source": {
+        "file": "backend/routes/ai.js",
+        "line": 165
+      }
+    },
+    {
+      "id": "ai-belt-readiness",
+      "endpoint": "/api/ai/belt-readiness",
+      "title": "Belt readiness",
+      "description": "Review native inputs and source evidence before generating. Examples are illustrative and require your review.",
+      "fields": [
+        {
+          "key": "student_id",
+          "type": "text",
+          "required": true,
+          "label": "Student id",
+          "presets": [
+            "Example student id 1",
+            "Example student id 2",
+            "Example student id 3"
+          ],
+          "manual": true,
+          "resource": "students"
+        },
+        {
+          "key": "target_belt",
+          "type": "text",
+          "required": true,
+          "label": "Target belt",
+          "presets": [
+            "Yellow belt",
+            "Green belt",
+            "Blue belt"
+          ],
+          "manual": false
+        }
+      ],
+      "source": {
+        "file": "backend/routes/ai.js",
+        "line": 228
+      }
+    },
+    {
+      "id": "ai-tournament-strategy",
+      "endpoint": "/api/ai/tournament-strategy",
+      "title": "Tournament strategy",
+      "description": "Review native inputs and source evidence before generating. Examples are illustrative and require your review.",
+      "fields": [
+        {
+          "key": "student_id",
+          "type": "text",
+          "required": true,
+          "label": "Student id",
+          "presets": [
+            "Example student id 1",
+            "Example student id 2",
+            "Example student id 3"
+          ],
+          "manual": true,
+          "resource": "students"
+        },
+        {
+          "key": "tournament_name",
+          "type": "text",
+          "required": false,
+          "label": "Tournament name",
+          "presets": [
+            "Autumn regional open",
+            "Winter invitational",
+            "Spring state championship"
+          ],
+          "manual": false
+        },
+        {
+          "key": "division",
+          "type": "text",
+          "required": false,
+          "label": "Division",
+          "presets": [
+            "Adult beginner",
+            "Junior intermediate",
+            "Adult advanced"
+          ],
+          "manual": false
+        },
+        {
+          "key": "weight_class",
+          "type": "number",
+          "required": false,
+          "label": "Weight class",
+          "presets": [
+            65,
+            75,
+            85
+          ],
+          "manual": false
+        }
+      ],
+      "source": {
+        "file": "backend/routes/ai.js",
+        "line": 296
+      }
+    },
+    {
+      "id": "ai-injury-prevention",
+      "endpoint": "/api/ai/injury-prevention",
+      "title": "Injury prevention",
+      "description": "Review native inputs and source evidence before generating. Examples are illustrative and require your review.",
+      "fields": [
+        {
+          "key": "student_id",
+          "type": "text",
+          "required": true,
+          "label": "Student id",
+          "presets": [
+            "Example student id 1",
+            "Example student id 2",
+            "Example student id 3"
+          ],
+          "manual": true,
+          "resource": "students"
+        }
+      ],
+      "source": {
+        "file": "backend/routes/ai.js",
+        "line": 349
+      }
+    },
+    {
+      "id": "ai-sparring-match",
+      "endpoint": "/api/ai/sparring-match",
+      "title": "Sparring match",
+      "description": "Review native inputs and source evidence before generating. Examples are illustrative and require your review.",
+      "fields": [
+        {
+          "key": "student_a_id",
+          "type": "text",
+          "required": true,
+          "label": "Student a id",
+          "presets": [
+            "Example student a id 1",
+            "Example student a id 2",
+            "Example student a id 3"
+          ],
+          "manual": true,
+          "resource": "students"
+        },
+        {
+          "key": "student_b_id",
+          "type": "text",
+          "required": true,
+          "label": "Student b id",
+          "presets": [
+            "Example student b id 1",
+            "Example student b id 2",
+            "Example student b id 3"
+          ],
+          "manual": true,
+          "resource": "students"
+        }
+      ],
+      "source": {
+        "file": "backend/routes/ai.js",
+        "line": 481
+      }
+    },
+    {
+      "id": "ai-dropout-risk",
+      "endpoint": "/api/ai/dropout-risk",
+      "title": "Dropout risk",
+      "description": "Review native inputs and source evidence before generating. Examples are illustrative and require your review.",
+      "fields": [
+        {
+          "key": "student_id",
+          "type": "text",
+          "required": true,
+          "label": "Student id",
+          "presets": [
+            "Example student id 1",
+            "Example student id 2",
+            "Example student id 3"
+          ],
+          "manual": true,
+          "resource": "students"
+        }
+      ],
+      "source": {
+        "file": "backend/routes/ai.js",
+        "line": 534
+      }
+    },
+    {
+      "id": "ai-bracket-projection",
+      "endpoint": "/api/ai/bracket-projection",
+      "title": "Bracket projection",
+      "description": "Review native inputs and source evidence before generating. Examples are illustrative and require your review.",
+      "fields": [
+        {
+          "key": "tournament_name",
+          "type": "text",
+          "required": false,
+          "label": "Tournament name",
+          "presets": [
+            "Autumn regional open",
+            "Winter invitational",
+            "Spring state championship"
+          ],
+          "manual": false
+        },
+        {
+          "key": "student_ids",
+          "type": "json",
+          "required": true,
+          "label": "Student ids",
+          "presets": [
+            [
+              "Illustrative source item 1"
+            ],
+            [
+              "Illustrative source item 2"
+            ],
+            [
+              "Illustrative source item 3"
+            ]
+          ],
+          "manual": true
+        }
+      ],
+      "source": {
+        "file": "backend/routes/ai.js",
+        "line": 600
+      }
+    },
+    {
+      "id": "ai-curriculum-coverage",
+      "endpoint": "/api/ai/curriculum-coverage",
+      "title": "Curriculum coverage",
+      "description": "Review native inputs and source evidence before generating. Examples are illustrative and require your review.",
+      "fields": [
+        {
+          "key": "student_id",
+          "type": "text",
+          "required": true,
+          "label": "Student id",
+          "presets": [
+            "Example student id 1",
+            "Example student id 2",
+            "Example student id 3"
+          ],
+          "manual": true,
+          "resource": "students"
+        },
+        {
+          "key": "target_belt",
+          "type": "text",
+          "required": true,
+          "label": "Target belt",
+          "presets": [
+            "Yellow belt",
+            "Green belt",
+            "Blue belt"
+          ],
+          "manual": false
+        }
+      ],
+      "source": {
+        "file": "backend/routes/ai.js",
+        "line": 643
+      }
+    },
+    {
+      "id": "ai-marketing-content",
+      "endpoint": "/api/ai/marketing-content",
+      "title": "Marketing content",
+      "description": "Review native inputs and source evidence before generating. Examples are illustrative and require your review.",
+      "fields": [
+        {
+          "key": "content_type",
+          "type": "text",
+          "required": true,
+          "label": "Content type",
+          "presets": [
+            "Class announcement",
+            "Student spotlight",
+            "New member invitation"
+          ],
+          "manual": false
+        },
+        {
+          "key": "details",
+          "type": "text",
+          "required": false,
+          "label": "Details",
+          "presets": [
+            "Announce a beginner class on Saturday morning; invite prospective students to book a trial.",
+            "Highlight a student achievement with permission and include a respectful call to action.",
+            "Invite local families to an introductory session and explain what to expect."
+          ],
+          "manual": false
+        }
+      ],
+      "source": {
+        "file": "backend/routes/ai.js",
+        "line": 697
+      }
+    },
+    {
+      "id": "ai-student-performance-analytics",
+      "endpoint": "/api/ai/student-performance-analytics",
+      "title": "Student performance analytics",
+      "description": "Review native inputs and source evidence before generating. Examples are illustrative and require your review.",
+      "fields": [
+        {
+          "key": "student_id",
+          "type": "text",
+          "required": true,
+          "label": "Student id",
+          "presets": [
+            "Example student id 1",
+            "Example student id 2",
+            "Example student id 3"
+          ],
+          "manual": true,
+          "resource": "students"
+        },
+        {
+          "key": "since",
+          "type": "text",
+          "required": false,
+          "label": "Since",
+          "presets": [
+            "2026-10-08",
+            "2026-10-08",
+            "2026-10-08"
+          ],
+          "manual": false
+        }
+      ],
+      "source": {
+        "file": "backend/routes/ai.js",
+        "line": 749
+      }
+    },
+    {
+      "id": "ai-class-optimization",
+      "endpoint": "/api/ai/class-optimization",
+      "title": "Class optimization",
+      "description": "Review native inputs and source evidence before generating. Examples are illustrative and require your review.",
+      "fields": [
+        {
+          "key": "dojoId",
+          "type": "text",
+          "required": false,
+          "label": "Dojo Id",
+          "presets": [
+            "Example dojo id 1",
+            "Example dojo id 2",
+            "Example dojo id 3"
+          ],
+          "manual": true
+        }
+      ],
+      "source": {
+        "file": "backend/routes/ai.js",
+        "line": 793
+      }
+    },
+    {
+      "id": "ai-equipment-demand-forecast",
+      "endpoint": "/api/ai/equipment-demand-forecast",
+      "title": "Equipment demand forecast",
+      "description": "Review native inputs and source evidence before generating. Examples are illustrative and require your review.",
+      "fields": [
+        {
+          "key": "dojoId",
+          "type": "text",
+          "required": false,
+          "label": "Dojo Id",
+          "presets": [
+            "Example dojo id 1",
+            "Example dojo id 2",
+            "Example dojo id 3"
+          ],
+          "manual": true
+        },
+        {
+          "key": "horizon_days",
+          "type": "number",
+          "required": false,
+          "label": "Horizon days",
+          "presets": [
+            30,
+            60,
+            90
+          ],
+          "manual": false
+        }
+      ],
+      "source": {
+        "file": "backend/routes/ai.js",
+        "line": 831
+      }
+    },
+    {
+      "id": "ai-instructor-workload-balancer",
+      "endpoint": "/api/ai/instructor-workload-balancer",
+      "title": "Instructor workload balancer",
+      "description": "Review native inputs and source evidence before generating. Examples are illustrative and require your review.",
+      "fields": [
+        {
+          "key": "dojoId",
+          "type": "text",
+          "required": false,
+          "label": "Dojo Id",
+          "presets": [
+            "Example dojo id 1",
+            "Example dojo id 2",
+            "Example dojo id 3"
+          ],
+          "manual": true
+        }
+      ],
+      "source": {
+        "file": "backend/routes/ai.js",
+        "line": 871
+      }
+    }
+  ],
+  "resources": [
+    {
+      "key": "students",
+      "endpoint": "/api/students",
+      "label": "Students",
+      "fields": [
+        "first_name",
+        "last_name",
+        "email",
+        "phone",
+        "date_of_birth",
+        "belt_rank",
+        "join_date",
+        "goals",
+        "emergency_contact",
+        "emergency_phone",
+        "photo_url",
+        "active"
+      ],
+      "updateFields": [
+        "first_name",
+        "last_name",
+        "email",
+        "phone",
+        "date_of_birth",
+        "belt_rank",
+        "join_date",
+        "goals",
+        "emergency_contact",
+        "emergency_phone",
+        "photo_url",
+        "active"
+      ],
+      "delete": true,
+      "source": "backend/routes/students.js"
+    },
+    {
+      "key": "classes",
+      "endpoint": "/api/classes",
+      "label": "Classes",
+      "fields": [
+        "class_name",
+        "style",
+        "level",
+        "instructor_id",
+        "day_of_week",
+        "start_time",
+        "end_time",
+        "room",
+        "max_capacity",
+        "active"
+      ],
+      "updateFields": [
+        "class_name",
+        "style",
+        "level",
+        "instructor_id",
+        "day_of_week",
+        "start_time",
+        "end_time",
+        "room",
+        "max_capacity",
+        "active"
+      ],
+      "delete": true,
+      "source": "backend/routes/classes.js"
+    }
+  ]
+}

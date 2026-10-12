@@ -1,3 +1,5 @@
+import NativeWorkflowStudio from './NativeWorkflowStudio';
+import nativeWorkflowConfig from './nativeWorkflowConfig.json';
 import WorkflowSidebar from './WorkflowSidebar';
 import { useEffect, useState } from 'react';
 import './App.css';
@@ -7,11 +9,13 @@ const configuredApiBase = process.env.REACT_APP_API_URL || '';
 const API_BASE = typeof window === 'undefined' ? configuredApiBase : configuredApiBase.replace(/127\.0\.0\.1|localhost/, window.location.hostname);
 
 async function api(path, options = {}) {
-  const response = await fetch(`${API_BASE}${path}`, { ...options, headers: { Accept: 'application/json', 'Content-Type': 'application/json', ...options.headers } });
+  const response = await fetch(`${API_BASE}${path}`, { ...options, headers: { Accept: 'application/json', ...(options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }), ...options.headers } });
   const body = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(body.error || `Request failed with HTTP ${response.status}`);
   return body;
 }
+
+function authenticatedNativeRequest(path, options = {}) { return api(path, { ...options, headers: { ...(options.headers || {}), Authorization: `Bearer ${localStorage.getItem('authToken') || ''}` } }); }
 
 export default function App() {
   const [email, setEmail] = useState('');
@@ -28,9 +32,7 @@ export default function App() {
 
   const fillDemoCredentials = async () => {
     setError(''); setBusy(true);
-    try { const credentials = await api('/api/auth/demo-credentials'); setEmail(credentials.email); setPassword(credentials.password)
-
-}
+    try { const credentials = await api('/api/auth/demo-credentials'); setEmail(credentials.email); setPassword(credentials.password); }
     catch (requestError) { setError(requestError.message); }
     finally { setBusy(false); }
   };
@@ -51,9 +53,9 @@ export default function App() {
     {error && <p className="form-error" role="alert">{error}</p>}
     <label>Email<input type="email" value={email} onChange={(event) => setEmail(event.target.value)} required autoComplete="username" /></label>
     <label>Password<input type="password" value={password} onChange={(event) => setPassword(event.target.value)} required autoComplete="current-password" /></label>
-    <button className="demo-button" type="button" onClick={fillDemoCredentials} disabled={busy}>Auto Fill Demo Credentials</button>
+    <button className="demo-button" type="button" onClick={fillDemoCredentials} disabled={busy}>Fill Demo Credentials</button>
     <button className="primary-button" type="submit" disabled={busy}>{busy ? 'Please wait…' : 'Sign In'}</button>
   </form></main>;
 
-  return <div className="codex-nav-shell"><WorkflowSidebar title="MartialArtDojoManager" features={FEATURES} /><main className="shell"><section className="hero" id="overview"><div className="account-row"><p className="eyebrow">Authenticated workspace</p><button type="button" onClick={() => { localStorage.removeItem('authToken'); setUser(null); }}>Sign out</button></div><h1>AI Martial Arts Dojo Manager</h1><p className="lede">Welcome, {user.name || user.email}. Your authenticated dojo workflow is ready.</p><div className="service service--ready" role="status"><span>Connected</span><p>Backend API and session identity are verified.</p></div></section><section aria-labelledby="workflow-heading"><h2 id="workflow-heading">Primary workflow</h2><div className="workflow">{FEATURES.map((feature, index) => <article key={feature} id={`step-${index + 1}`}><strong>{String(index + 1).padStart(2, '0')}</strong><h3>{feature}</h3><p>Continue this authenticated workflow with auditable saved results.</p></article>)}</div></section></main></div>;
+  return <div className="codex-nav-shell"><WorkflowSidebar title="MartialArtDojoManager" features={FEATURES} /><main className="shell"><section className="hero" id="overview"><div className="account-row"><p className="eyebrow">Authenticated workspace</p><button type="button" onClick={() => { localStorage.removeItem('authToken'); setUser(null); }}>Sign out</button></div><h1>AI Martial Arts Dojo Manager</h1><p className="lede">Welcome, {user.name || user.email}. Your authenticated dojo workflow is ready.</p><div className="service service--ready" role="status"><span>Connected</span><p>Backend API and session identity are verified.</p></div></section><section aria-labelledby="workflow-heading"><h2 id="workflow-heading">Primary workflow</h2><div className="workflow">{FEATURES.map((feature, index) => <article key={feature} id={`step-${index + 1}`}><strong>{String(index + 1).padStart(2, '0')}</strong><h3>{feature}</h3><p>Continue this authenticated workflow with auditable saved results.</p></article>)}</div></section><NativeWorkflowStudio config={nativeWorkflowConfig} request={authenticatedNativeRequest} /></main></div>;
 }
