@@ -217,6 +217,7 @@ setTimeout(runBackgroundScan, 10000);
 
 // Custom Views (mounted BEFORE 404 / error handler)
 app.use('/api/custom-views', auth, require('./routes/customViews'));
+app.use('/api/tasks', auth, require('./routes/tasksFeaturePack').createTasksRouter({ auth }));
 app.use('/api/sparring-safety-matchmaker', auth, require('./routes/sparringSafetyMatchmaker'));
 
 // Error handling middleware
